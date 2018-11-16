@@ -36,9 +36,9 @@ class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            'username': 'CI08128', 'password':'' , isLoggedIn : true, userError: Boolean,
-            'items': [], 'token' : '',  'id': '',
-            'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NDE1MTc3NzMsInVzZXJuYW1lIjoiUGF5ZXIiLCJvcmdOYW1lIjoiT3JnMiIsImlhdCI6MTU0MTQ4MTc3M30.3wFHR95SUXD1WVkaFYDqQLYkjjRa1BeLNFMD3hia284', 
+            'username': 'PAYER123ID', 'password':'' , isLoggedIn : true, userError: Boolean,
+            'items': [], 'hash' : '',  'id': '', Holder: 'Hash',
+            'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM2MDE1NDIzNjAxNjksInVzZXJuYW1lIjoiUGF5ZXIiLCJvcmdOYW1lIjoiT3JnMiIsImlhdCI6MTU0MjM2MDE2OX0.FzaNkJWmY1LsXpoMZqCOdE4nS8Vybz8YO1gcXJ7M-fc', 
             fetchError: 0, 'toutput': [] ,'foutput' : [], view: false,
             fhirUrl: 'http://', Holder: '', 
             fhirResponse: {"resourceType":"Bundle","id":"7429ac77-d3ab-481c-ba57-e0440e58c567","type":"searchset","total":4,"link":[{"relation":"self","url":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure?patient=1316020"}],"entry":[{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394555","resource":{"resourceType":"Procedure","id":"26394555","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:12:29.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe"},"performedDateTime":"2015","encounter":{"reference":"Encounter/2457909"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394551","resource":{"resourceType":"Procedure","id":"26394551","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:11:37.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza A (H1N1) virus\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ELocation\u003C/b\u003E: BU-BC\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"442352004","display":"Influenza A virus subtype H1N1 (organism)"}],"text":"Influenza A (H1N1) virus"},"performedDateTime":"2007","encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4059955","display":"BU-BC"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/34722551","resource":{"resourceType":"Procedure","id":"34722551","meta":{"versionId":"0","lastUpdated":"2015-10-27T15:36:56.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Knee abrasion\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ELocation\u003C/b\u003E: Baseline East\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ENotes\u003C/b\u003E: \u003Cul\u003E\u003Cli\u003ERecreate Test.\u003C/li\u003E\u003C/ul\u003E\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"211332006","display":"Abrasion, knee (disorder)"}],"text":"Knee abrasion"},"performer":[{"actor":{"reference":"Practitioner/1686008","display":"Morthala, Uday"}}],"_performedDateTime":{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"unknown"}]},"encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4048128","display":"Baseline East"},"notes":[{"authorReference":{"reference":"Practitioner/1686008","display":"Morthala, Uday"},"time":"2015-10-27T15:36:57.000Z","text":"Recreate Test."}]}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/24110557","resource":{"resourceType":"Procedure","id":"24110557","meta":{"versionId":"1","lastUpdated":"2014-09-16T22:49:27.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ENotes\u003C/b\u003E: \u003Cul\u003E\u003Cli\u003ETesting this influenza\u003C/li\u003E\u003C/ul\u003E\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza"},"performedDateTime":"2014-09-16T00:00:00.000-05:00","encounter":{"reference":"Encounter/2457909"},"notes":[{"authorReference":{"reference":"Practitioner/1590015","display":"Herrman, Greg"},"time":"2014-09-16T21:35:32.000Z","text":"Testing this influenza"}]}}]}, 
@@ -56,6 +56,13 @@ class Login extends Component {
         if(this.state.results == false){
             alert("Invalid or Bad Request")
         }
+    }
+    componentDidUpdate() {
+        var hash = this.state.hash;
+        var len = hash.length;
+        if (len > 33) {
+          this.fetchData()
+        } 
     } 
     handleChangeUsername(e) {
         this.setState({username: e.target.value});
@@ -75,7 +82,7 @@ class Login extends Component {
         }  
     }
     handleLogout() {
-        this.setState({isLoggedIn : false, 'items': [], 'token': ''})
+        this.setState({isLoggedIn : false, 'items': [], 'hash': ''})
     }
     fetchData() {
       let config = {
@@ -85,9 +92,9 @@ class Login extends Component {
           'content-Type': 'application/json'
         },
       }
-      //fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/payerchart?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22'+this.state.token+'%22%5D', config)
-      //fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/payerchart?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22{\"selector\":{\"clientId\":\"'+this.state.token+'\",\"payerId\":\"'+this.state.username+'\"}}%22%5D', config)
-      fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/payerchart?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22_rev%5C%22:%5C%22'+this.state.token+'%5C%22,%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
+      //fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/payerchart?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22'+this.state.hash+'%22%5D', config)
+      //fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/payerchart?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22{\"selector\":{\"clientId\":\"'+this.state.hash+'\",\"payerId\":\"'+this.state.username+'\"}}%22%5D', config)
+      fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22_rev%5C%22:%5C%22'+this.state.hash+'%5C%22,%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
         .then(response =>  response.json() )
         .then(response => {
             if (JSON.stringify(response) == '[]'){
@@ -98,7 +105,7 @@ class Login extends Component {
             } else {
                 //this.setState({ fetchError : 2})
                 
-                this.setState({ fetchError : 2 ,'items' : response, fhirUrl: response.fhirUrl})
+                this.setState({ fetchError : 2 ,'items' : response, fhirUrl: response.Record.fhirUrl , hash: '', Holder: this.state.hash})
             }
     } )
         //.then((response) => this.setState({ 'items' : response }));
@@ -140,7 +147,7 @@ class Login extends Component {
         
     }  
     handleChange(e) {
-      this.setState({token: e.target.value});
+      this.setState({hash: e.target.value});
     }
 
     handleChangeFilter(e) {
@@ -171,48 +178,7 @@ class Login extends Component {
     render() {   
 
         const inputStyle ={ height: '35px', margin: 'auto', width: '100%'};
-        //const display1 = <ItemView.Display icon={<IconPerson />} text={this.state.items.PatDisplay} />;
-        const display1 = <ItemView.Display icon={<IconPerson />} text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.patDisplay}</React.Fragment>))} />;
 
-        const display20 = <ItemView.Display text="Patient Reference ID: " />;
-        const display2 = <ItemView.Display text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.patReference}</React.Fragment>))} />;
-        const display21 =[display20, display2]
-        const display30 = <ItemView.Display text="Status: " />;
-        const display3 = <ItemView.Display text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.status}</React.Fragment>))} />;
-        const display31 =[display30, display3]
-        const display40 = <ItemView.Display text="ClientId: " />;
-        const display4 = <ItemView.Display text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.clientId}</React.Fragment>))} />;
-        //const display4 = <ItemView.Display text={this.state.foutput.Record} />;
-        const display41 =[display40, display4]
-        //const display50 = <ItemView.Display text="Age: " />;
-        //const display5 = <ItemView.Display text={this.state.items.age} />;
-        //const display51 =[display50, display5]
-        const displays = [display1,display41, display21, display31];
-
-        const display01 = <ItemView.Display icon={<IconPersonHospital />} text="Encounter Info:"/>;
-        //const display011 = <ItemView.Display text="Weight: "/>;
-        //const display012 = <ItemView.Display text={this.state.items.weight}/>;
-        //const display00= [display011,display012]
-        const display021 = <ItemView.Display icon={<IconHospital />} text="Provider Name:  "/>;
-        const display022 = <ItemView.Display text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.sourceDisplay}</React.Fragment>))}/>;
-        const display02= [display021,display022]
-        const display031 = <ItemView.Display icon={<IconProvider />} text="Provideer ID:  "/>;
-        const display032 = <ItemView.Display text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.sourceReference}</React.Fragment>))}/>;
-        const display03 =[display031,display032];
-        const display041 = <ItemView.Display icon={<IconBedRequested/>} />;
-        const display042 = <ItemView.Display text="Period Start:  "/>;
-        const display043 = <ItemView.Display text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.periodStart}</React.Fragment>))}/>;
-        const display0041 =[ display042, display043]
-        const display044 = <ItemView.Display text="Period End:  "/>;
-        const display045 = <ItemView.Display text={this.state.items.map(item => (<React.Fragment key={item.id}>{item.Record.dateAsserted}</React.Fragment>))}/>;
-        const display0042 = [display044, display045]
-        const display04 =[display041,display0041, display0042];
-        const display0 =[display01, display02, display03, display041, display0041, display0042];
-        const displayurh = <ItemView.Display text="FIRE URL to query additional clinical Information:  "/>;
-        const displayur =<ItemView.Display text="http:xxx.xxx.xx.xx:xxxx/database "/>;
-        const displayURL = [displayurh, displayur]
-        //const inputStyle ={ height: '35px', width: '300px'};
-        
         
         
         const buttonStyle = { margin: 'auto' };
@@ -227,15 +193,16 @@ class Login extends Component {
  * Checkbox UI to select the key vlaues to be displayed and push selected elemets 
  */      
         const {view  , selectedAnswers} = this.state;
-        /*const arrayToObject = (array, keyField) => array.reduce((obj, item) => {
+        const arrayToObject = (array, keyField) => array.reduce((obj, item) => {
             obj[item[keyField]] = item
             return obj
         }, {});
-        const objSelectedAnswers = arrayToObject(selectedAnswers, Object.entries(selectedAnswers).map( key => key[0]) ); */
+        const objSelectedAnswers = arrayToObject(selectedAnswers, Object.entries(selectedAnswers).map( key => key[0]) ); 
         const checkBoxSelection = Object.entries(fhirResponse).map(key => 
-            <React.Fragment key={key[0]}>
+            
+            <React.Fragment key={key}>
                 <div style={{ width:'500px', margin:'auto', fontSize: '20px'}}>
-                    <Checkbox id="Data" name="filter" labelText={key[0].toUpperCase()} onChange={this.handleOnSelect} value={key} />
+                    <Checkbox id="Data" name="filter" labelText={key[0].toUpperCase()} onChange={this.handleOnSelect} value={JSON.stringify(arrayToObject(key, key[0]))} />
                 </div>
             </React.Fragment>
         )
@@ -304,7 +271,7 @@ class Login extends Component {
                 <div  style={{ margin: 'auto', height: '500px', width: '100%'}}> 
                     <Fieldset legend="Query the Additional Clinical Information" legendAttrs={{ className: 'healtheintent-application' }} help="Enter a Valid Hash along with the required clinical information and Click Submit" isInline style={feildStyle} >               
                         <ul>
-                            <Input type="text" placeholder ="Hash" value={this.state.token} onChange={this.handleChange}  style={inputStyle}/>                      
+                            <Input type="text" placeholder ={this.state.Holder} value={this.state.hash} onChange={this.handleChange}  style={inputStyle}/>                      
                         </ul>
                         <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Submit" variant="action" style={buttonStyle} />
                       
@@ -336,11 +303,7 @@ class Login extends Component {
                         
                         <Card>
                             <Card.Body isContentCentered>
-                                <ItemView displays={displays}/>
-                                <hr style={{ border: '0 none', borderTop: '1px solid #c8cacb', boxSizing: 'border-box', height: '1px', margin: '0', }}/>
-                                <ItemView displays={display0} />
-                                <hr style={{ border: '0 none', borderTop: '1px solid #c8cacb', boxSizing: 'border-box', height: '1px', margin: '0', }}/>
-                                <ItemView displays ={displayURL}/>
+                         
                             </Card.Body>
                         </Card>
 
