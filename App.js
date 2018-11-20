@@ -8,6 +8,7 @@ import img from './cerner.png';
 
 import Input from 'terra-form-input';
 
+
 import Login from './login';
 
 import ApplicationHeaderLayout from 'terra-application-header-layout';
@@ -38,7 +39,7 @@ class App extends Component {
     );
     return (
       <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >
-        <ApplicationMenuName title="Cernchain" accessory={<Image src={img} height="80px" width="80px" isFluid />} />
+        <ApplicationMenuName title="Payer Chart Review" accessory={<Image src={img} height="80px" width="80px" isFluid />} />
       </div>
     );
   }

@@ -13,8 +13,20 @@ import img from './cerner.png';
 import Image from 'terra-image';
 import Alert from 'terra-alert/lib/Alert';
 import sha256 from 'crypto-js/sha256';
+import DialogModal from 'terra-dialog-modal';
 
-class Invoke extends React.Component {
+import ActionFooter from 'terra-action-footer';
+
+import ActionHeader from 'terra-action-header';
+
+
+import ContentComponent from 'terra-disclosure-manager/lib/terra-dev-site/doc/example/ContentComponent';
+
+/* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
+import ModalManager from 'terra-modal-manager/lib/ModalManager';
+import styles from 'terra-modal-manager/lib/terra-dev-site/doc/example/example-styles.scss';
+
+class Invokes extends React.Component {
     constructor(){
         super();
         this.state ={
@@ -227,6 +239,48 @@ class Invoke extends React.Component {
     );
   }
 }
+
+class Invoke extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      isOpen: false,
+    };
+
+    this.handleOpenModal = this.handleOpenModal.bind(this);
+    this.handleCloseModal = this.handleCloseModal.bind(this);
+  }
+
+  handleOpenModal() {
+    this.setState({ isOpen: true });
+  }
+
+  handleCloseModal() {
+    this.setState({ isOpen: false });
+  }
+
+  render() {
+    const paraOne = ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
+      'Maecenas molestie in lorem vel facilisis. Quisque ac enim nec lectus malesuada faucibus.',
+      'Integer congue feugiat ultricies.',
+      ' Nunc non mauris sed tellus cursus vestibulum nec quis ipsum.',
+      'Vivamus ornare magna justo, et volutpat tortor congue ut. Nulla facilisi.',
+      ' Cras in venenatis turpis. Nullam id odio justo. Etiam vehicula lectus vel purus consectetur cursus id sit amet diam.',
+      'Donec facilisis dui non orci hendrerit pharetra. Suspendisse blandit dictum turpis, in consectetur ipsum hendrerit eget.',
+      'Nam vehicula, arcu vitae egestas porttitor,',
+      'turpis nisi pulvinar neque, ut lacinia urna purus sit amet elit.'];
+    return (
+      <div>
+    <ModalManager>
+      <ContentComponent disclosureType="modal" />
+    </ModalManager>
+  </div>
+    );
+  }
+}
+
+
 
 export default Invoke;
 //<Button color="primary" size ="lg" value = {j} onClick={this.random} text="Generate" variant="emphasis"  style={buttonStyle} />

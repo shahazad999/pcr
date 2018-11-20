@@ -33,19 +33,23 @@ import Hyperlink from 'terra-hyperlink/lib/Hyperlink';
 
 import ActionHeader from 'terra-action-header';
 import Dialog from 'terra-dialog/lib/Dialog';
+import Divider from 'terra-divider';
+import InputField from 'terra-form-input/lib/InputField';
+import DialogModal from 'terra-dialog-modal';
 
-
+import ActionFooter from 'terra-action-footer';
 class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            'username': 'PAYER123ID', 'password':'' , isLoggedIn : false, isUserValid: true,
+            'username': 'PAYER999ID', 'password':'' , isLoggedIn : false, isUserValid: true,
             'items': [], 'hash' : '',  'id': '', Holder: 'Hash',
             'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM2MDE1NDIzNjAxNjksInVzZXJuYW1lIjoiUGF5ZXIiLCJvcmdOYW1lIjoiT3JnMiIsImlhdCI6MTU0MjM2MDE2OX0.FzaNkJWmY1LsXpoMZqCOdE4nS8Vybz8YO1gcXJ7M-fc', 
             fetchError: 0, 'toutput': [] ,'foutput' : [], view: false,
-            fhirUrl: 'http://', Holder: '', 
+            fhirUrl: 'http://', Holder: 'Enter a valid Hash provided in the claim', 
             //fhirResponse: {"resourceType":"Bundle","id":"7429ac77-d3ab-481c-ba57-e0440e58c567","type":"searchset","total":4,"link":[{"relation":"self","url":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure?patient=1316020"}],"entry":[{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394555","resource":{"resourceType":"Procedure","id":"26394555","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:12:29.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe"},"performedDateTime":"2015","encounter":{"reference":"Encounter/2457909"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394551","resource":{"resourceType":"Procedure","id":"26394551","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:11:37.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza A (H1N1) virus\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ELocation\u003C/b\u003E: BU-BC\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"442352004","display":"Influenza A virus subtype H1N1 (organism)"}],"text":"Influenza A (H1N1) virus"},"performedDateTime":"2007","encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4059955","display":"BU-BC"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/34722551","resource":{"resourceType":"Procedure","id":"34722551","meta":{"versionId":"0","lastUpdated":"2015-10-27T15:36:56.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Knee abrasion\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ELocation\u003C/b\u003E: Baseline East\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ENotes\u003C/b\u003E: \u003Cul\u003E\u003Cli\u003ERecreate Test.\u003C/li\u003E\u003C/ul\u003E\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"211332006","display":"Abrasion, knee (disorder)"}],"text":"Knee abrasion"},"performer":[{"actor":{"reference":"Practitioner/1686008","display":"Morthala, Uday"}}],"_performedDateTime":{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"unknown"}]},"encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4048128","display":"Baseline East"},"notes":[{"authorReference":{"reference":"Practitioner/1686008","display":"Morthala, Uday"},"time":"2015-10-27T15:36:57.000Z","text":"Recreate Test."}]}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/24110557","resource":{"resourceType":"Procedure","id":"24110557","meta":{"versionId":"1","lastUpdated":"2014-09-16T22:49:27.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ENotes\u003C/b\u003E: \u003Cul\u003E\u003Cli\u003ETesting this influenza\u003C/li\u003E\u003C/ul\u003E\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza"},"performedDateTime":"2014-09-16T00:00:00.000-05:00","encounter":{"reference":"Encounter/2457909"},"notes":[{"authorReference":{"reference":"Practitioner/1590015","display":"Herrman, Greg"},"time":"2014-09-16T21:35:32.000Z","text":"Testing this influenza"}]}}]}, 
-            fhirResponse: [{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394555","resource":{"resourceType":"Procedure","id":"26394555","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:12:29.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe</p><p><b>Status</b>: Completed</p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe"},"performedDateTime":"2015","encounter":{"reference":"Encounter/2457909"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394551","resource":{"resourceType":"Procedure","id":"26394551","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:11:37.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza A (H1N1) virus</p><p><b>Status</b>: Completed</p><p><b>Location</b>: BU-BC</p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"442352004","display":"Influenza A virus subtype H1N1 (organism)"}],"text":"Influenza A (H1N1) virus"},"performedDateTime":"2007","encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4059955","display":"BU-BC"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/34722551","resource":{"resourceType":"Procedure","id":"34722551","meta":{"versionId":"0","lastUpdated":"2015-10-27T15:36:56.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Knee abrasion</p><p><b>Status</b>: Completed</p><p><b>Location</b>: Baseline East</p><p><b>Notes</b>: <ul><li>Recreate Test.</li></ul></p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"211332006","display":"Abrasion, knee (disorder)"}],"text":"Knee abrasion"},"performer":[{"actor":{"reference":"Practitioner/1686008","display":"Morthala, Uday"}}],"_performedDateTime":{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"unknown"}]},"encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4048128","display":"Baseline East"},"notes":[{"authorReference":{"reference":"Practitioner/1686008","display":"Morthala, Uday"},"time":"2015-10-27T15:36:57.000Z","text":"Recreate Test."}]}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/24110557","resource":{"resourceType":"Procedure","id":"24110557","meta":{"versionId":"1","lastUpdated":"2014-09-16T22:49:27.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza</p><p><b>Status</b>: Completed</p><p><b>Notes</b>: <ul><li>Testing this influenza</li></ul></p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza"},"performedDateTime":"2014-09-16T00:00:00.000-05:00","encounter":{"reference":"Encounter/2457909"},"notes":[{"authorReference":{"reference":"Practitioner/1590015","display":"Herrman, Greg"},"time":"2014-09-16T21:35:32.000Z","text":"Testing this influenza"}]}}],
+            //fhirResponse: [{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394555","resource":{"resourceType":"Procedure","id":"26394555","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:12:29.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe</p><p><b>Status</b>: Completed</p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe"},"performedDateTime":"2015","encounter":{"reference":"Encounter/2457909"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394551","resource":{"resourceType":"Procedure","id":"26394551","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:11:37.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza A (H1N1) virus</p><p><b>Status</b>: Completed</p><p><b>Location</b>: BU-BC</p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"442352004","display":"Influenza A virus subtype H1N1 (organism)"}],"text":"Influenza A (H1N1) virus"},"performedDateTime":"2007","encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4059955","display":"BU-BC"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/34722551","resource":{"resourceType":"Procedure","id":"34722551","meta":{"versionId":"0","lastUpdated":"2015-10-27T15:36:56.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Knee abrasion</p><p><b>Status</b>: Completed</p><p><b>Location</b>: Baseline East</p><p><b>Notes</b>: <ul><li>Recreate Test.</li></ul></p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"211332006","display":"Abrasion, knee (disorder)"}],"text":"Knee abrasion"},"performer":[{"actor":{"reference":"Practitioner/1686008","display":"Morthala, Uday"}}],"_performedDateTime":{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"unknown"}]},"encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4048128","display":"Baseline East"},"notes":[{"authorReference":{"reference":"Practitioner/1686008","display":"Morthala, Uday"},"time":"2015-10-27T15:36:57.000Z","text":"Recreate Test."}]}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/24110557","resource":{"resourceType":"Procedure","id":"24110557","meta":{"versionId":"1","lastUpdated":"2014-09-16T22:49:27.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza</p><p><b>Status</b>: Completed</p><p><b>Notes</b>: <ul><li>Testing this influenza</li></ul></p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza"},"performedDateTime":"2014-09-16T00:00:00.000-05:00","encounter":{"reference":"Encounter/2457909"},"notes":[{"authorReference":{"reference":"Practitioner/1590015","display":"Herrman, Greg"},"time":"2014-09-16T21:35:32.000Z","text":"Testing this influenza"}]}}],
+            fhirResponse: '',
             totalFhirResponse: '',
             selectedAnswers:[], isOpen: false
         }
@@ -65,10 +69,23 @@ class Login extends Component {
     componentDidUpdate() {
         var hash = this.state.hash;
         var len = hash.length;
+        
         if (len > 33) {
           this.fetchData()
         } 
+        const {selectedAnswers, view} = this.state;
+        if (selectedAnswers.length == 0 && view){
+            this.setState({ view: false})
+        }
+      
     } 
+    /*
+    componentDidUpdate() {
+        const {selectedAnswers, view} = this.state;
+        if (selectedAnswers.length == 0 && view){
+            this.setState({ view: false})
+        }
+    }*/
     handleChangeUsername(e) {
         this.setState({username: e.target.value});
     }
@@ -76,12 +93,13 @@ class Login extends Component {
         this.setState({password: e.target.value});
     }
     handleSubmit(){
-        
+        //Check the password
         const { username, password } = this.state;     
         if (!(password === 'blockchain')) {
             this.setState({ isLoggedIn: false }) 
           
         }
+        //Check the USER in blockchain 
         if ((password === 'blockchain')) {
             this.fetchUser()
         }  
@@ -89,9 +107,9 @@ class Login extends Component {
     handleLogout() {
         this.setState({isLoggedIn : false, isUserValid: false, fhirUrl: '', username: '', password: '', 'items': [], 'hash': '', fetchURL: '', fhirResponse: '', selectedAnswers: [], Holder: 'Hash', view:  false})
     }
-/**
+/**********************************
  * Fetch the data from blockchain
- */
+ **********************************/
     fetchData() {
       let config = {
         method: 'GET',
@@ -116,9 +134,9 @@ class Login extends Component {
     } )
  
     }
-/**
+/***********************************************************************
  * This fetches the USER in Blockchain network to authenticate the LOGIN
- */
+ ***********************************************************************/
     fetchUser() {
         let config = {
           method: 'GET',
@@ -133,13 +151,13 @@ class Login extends Component {
                 if (response.length > 20 ){
                     this.setState({ isUserValid : true , isLoggedIn: true})
                 } else {
-                    this.setState({ isUserValid : false })
+                    this.setState({ isUserValid : false })  //This will be changed when decided user can see main page even if he doesn't have ant data in the blockchain.
                 }
             } )
     }
-/**
- * Fetches data from the FHIR URl that recived from the blockchain
- */
+/******************************************************************
+ * Fetches data from the FHIR URl that recived from the blockchain 
+ *****************************************************************/
     fetchURL() {
         const fhirUrl = this.state.fhirUrl
         let config = {
@@ -165,9 +183,9 @@ class Login extends Component {
         this.fetchURL();
     }
     
-/**
- * Create an array of selected values on selection
- */
+/**********************************************************
+ * Create an array of selected values on Checkbox selection 
+ **********************************************************/
     handleOnSelect(e) {
         const { selectedAnswers } = this.state;
     
@@ -196,30 +214,27 @@ class Login extends Component {
         const logoutStyle = { textAlign: 'left', paddingLeft: '1100px', float: 'right'}
         let result;
         const fhirResponse = this.state.fhirResponse
-/**
- * Checkbox UI to select the key vlaues to be displayed and push selected elemets 
- */      
         const {view  , selectedAnswers} = this.state;
-        const arrayToObject = (array, keyField) => array.reduce((obj, item) => {
-            obj[item[keyField]] = item
-            return obj
-        }, {});
-        
-        const objSelectedAnswers = arrayToObject(selectedAnswers, Object.entries(selectedAnswers).map( key => key[0]) ); 
+/********************************************************************************
+ * Checkbox UI to select the key vlaues to be displayed and push selected elemets 
+ ********************************************************************************/      
         const checkBoxSelection = Object.entries(fhirResponse).map(key => 
-            <div>  
+
+            <div style={{margin: 'auto', position: 'relative',paddingLeft: '20px'}}>  
             <React.Fragment key={key}>
-                <div style={{ width:'500px', margin:'auto', fontSize: '20px'}}>
+                <div style={{ width:'500px', margin:'auto', fontSize: '20px',  float: "right"}}>
                     <Checkbox id="Data" name="filter" labelText={key[1].resource.resourceType + key[1].resource.id} onChange={(e) => {
                         var jsonArg1 = new Object(); 
                         jsonArg1.name = key[1].resource.resourceType + key[1].resource.id; 
                         jsonArg1.value = key[1].resource.text.div;
+                        jsonArg1.info = key[1].resource.meta.lastUpdated;
                         const { selectedAnswers } = this.state;
     
                         if (e.currentTarget.checked) {
                           selectedAnswers.push(jsonArg1);
                         } else if (!e.currentTarget.checked) {
-                          selectedAnswers.splice(selectedAnswers.indexOf(jsonArg1), 1);
+                          selectedAnswers.splice(selectedAnswers.values(jsonArg1), 1);
+                          
                           //selectedAnswers.pop(jsonArg1)
                          
                         }
@@ -227,9 +242,10 @@ class Login extends Component {
                         this.setState({ selectedAnswers });  
                         }} />
                 </div>
-
+               
             </React.Fragment>
-            </div>
+            </div> 
+         
                    
         )
  
@@ -257,73 +273,47 @@ class Login extends Component {
             </div>
         }
 */
-/**
+/*******************************************************************************
  * Display the final output retrived from FHIR after checkbox filtering only Entry
- */
-
-        const res = JSON.stringify(selectedAnswers)
+ ********************************************************************************/ 
         let finalOutput;
-        if (view){
-            finalOutput = <div style={{margin: 'auto', position: 'relative'}}>
-                            <Card>
+        if (view &&  selectedAnswers.length>0){
+            finalOutput = 
+            <div style={{ float:"right" ,position : "relative", margin: '50px'}}>
+            
+            <div style={{margin: '30px', position: 'relative'}}>
+                            <Card >
                             <Card.Body >
                             
-                            {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /></ul></React.Fragment>))}
-
+                            {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /><p><b>Last Updated:</b> {item.info}</p><Divider/></ul></React.Fragment>))}
+                            
                             </Card.Body>
                         </Card>
         </div>
-
-        } else {
-            finalOutput = <div>
-
-            </div>
-        }
-
-/**
- *  final output in dialog modal
- */
-/*
-       let finalOutput;
-        if (view){
-            finalOutput = <div style={{margin: 'auto', position: 'relative'}}>
-                           <Dialog onClose={() => {this.setState({selectedAnswers: []})}}>
-                               {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /></ul></React.Fragment>))}
-
-                           </Dialog>
-                            
-                            
-   
         </div>
-
         } else {
             finalOutput = <div>
 
             </div>
         }
 
-
-/**
- * Dispaly the URL
- */
+/*********************************
+ * Dispaly the URL and get Button
+ ********************************/
         let url;
         const {fhirUrl} = this.state;
         if (fhirUrl.length > 10) {
             url = <div>
-                <Hyperlink href  >{this.state.fhirUrl}</Hyperlink>
-               
-                    <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Get" variant="action" style={buttonStyle} />    
-           
-                
-            </div>
+                <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Search" variant="action" style={buttonStyle} />    
+                </div>
         } 
-/**
+/****************
  * View Button
- */
+ ****************/
         let  viewButton;
         if (selectedAnswers.length > 0) {
             viewButton = <div style={{margin: 'auto', position : 'relative'}}>
-                    <Button color="success" size="lg" onClick={() => {const x = this.state.view; this.setState( { view : !x, isOpen: true})}} text="View" variant="action" style={buttonStyle} />
+                    <Button color="success" size="lg" onClick={() => {const x = this.state.view; this.setState( { view : !x})}} text="View" variant="action" style={buttonStyle} />
             
             </div>
         } else {
@@ -331,9 +321,9 @@ class Login extends Component {
              
             </div>
         }
-/**
+/****************
  * Login Page UI
- */
+ ****************/
         const logInPage =  <div  style={{ margin: 'auto', height: '500px', width: '400px', textAlign:'left', position:'relative'}}> 
             <ul>  </ul>
             <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >
@@ -361,9 +351,9 @@ class Login extends Component {
         </div>
 
         
-/**
+/***************
  * Main Page UI 
- */
+ ***************/
        
         const mainPage  = <div>  
             <div style = {feildStyle}> 
@@ -372,22 +362,32 @@ class Login extends Component {
             <div style = {buttonStyle2}> 
                 <Button  onClick={this.handleLogout} text="Log Out" variant="action" style={buttonStyle2} />
             </div>
-            <div  style={{  height: '200px', width: '900px',  position:'relative'}}> 
+            <div  style={{  height: '200px',margin: '50px',  position:'absolute'}}> 
                 <div  style={{ margin: 'auto', height: '200px', width:'500px'}}> 
-                    <Fieldset legend="Query the Additional Clinical Information" legendAttrs={{ className: 'healtheintent-application' }} help="Enter a valid hash provided along with the claim" isInline style={feildStyle} >               
+                    <Fieldset legend="Query the Additional Clinical Information" legendAttrs={{ className: 'healtheintent-application' }}  isInline style={feildStyle} >               
                         <ul>
-                            <Input type="text" placeholder ={this.state.Holder} value={this.state.hash} onChange={this.handleChange}  style={{ margin: 'auto', width: '400px', height: '35px'}}/>                      
+  
+                            Hash : <Input required type="text" placeholder ={this.state.Holder} value={this.state.hash} onChange={this.handleChange}  style={{ margin: 'auto', width: '400px', height: '35px'}}/>                      
                         </ul>
-                       
+                        {url}
                     </Fieldset> 
                     </div>
-                    {url}
-                     
-                    {checkBoxSelection} 
-                   {viewButton}
-                    {finalOutput}
+                    
+                   
+                    {checkBoxSelection}
+                    <div style={{ float: "right" , width: '200px'}}>
+                    {viewButton}
+                    </div>
+                    
+                    
+                    
                 
             </div>
+            
+            {finalOutput}
+            
+                   
+            
         </div>
 /**
  * Login Validation
@@ -435,8 +435,17 @@ class Login extends Component {
          <div>
 
              {result}
-                
-             
+                <div>
+             <DialogModal
+          isOpen={this.state.isOpen}
+          onRequestClose={() => { this.setState({ isOpen: false })}}
+          header={<ActionHeader title="Action Header used here" onClose={() => { this.setState({ isOpen: false })}} />}
+          footer={<ActionFooter start="Footer Goes here" />}
+        >
+          <p>SOme thing funny</p>
+        </DialogModal>
+        <Button id="trigger-dialog-modal" text="Trigger Dialog Modal" onClick={() => { this.setState({ isOpen: true })}} />
+      </div>
         
              
          </div>
