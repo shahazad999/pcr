@@ -19,11 +19,15 @@ import ActionFooter from 'terra-action-footer';
 
 import ActionHeader from 'terra-action-header';
 
+import DynamicGrid from 'terra-dynamic-grid/lib/DynamicGrid';
+
+import ModalManager, { disclosureType, withModalManager } from 'terra-modal-manager';
+
 
 import ContentComponent from 'terra-disclosure-manager/lib/terra-dev-site/doc/example/ContentComponent';
 
 /* eslint-disable import/no-extraneous-dependencies, import/no-unresolved, import/extensions */
-import ModalManager from 'terra-modal-manager/lib/ModalManager';
+
 import styles from 'terra-modal-manager/lib/terra-dev-site/doc/example/example-styles.scss';
 
 class Invokes extends React.Component {
@@ -240,47 +244,84 @@ class Invokes extends React.Component {
   }
 }
 
-class Invoke extends React.Component {
-  constructor() {
-    super();
 
-    this.state = {
-      isOpen: false,
-    };
 
-    this.handleOpenModal = this.handleOpenModal.bind(this);
-    this.handleCloseModal = this.handleCloseModal.bind(this);
-  }
+const template = {
+  'grid-template-columns': '1fr 1fr',
+  'grid-template-rows': 'auto',
+  'grid-gap': '10px',
+};
 
-  handleOpenModal() {
-    this.setState({ isOpen: true });
-  }
+const region1 = {
+  'grid-column-start': 1,
+  'grid-row-start': 2,
+};
 
-  handleCloseModal() {
-    this.setState({ isOpen: false });
-  }
+const region2 = {
+  'grid-column-start': 2,
+  'grid-row-start': 2,
+};
+const region3 = {
+  'grid-column-start': 1,
+  'grid-column-end': 3,
+  'grid-row-start': 1,
+};
+class Invokea extends React.Component {
 
-  render() {
-    const paraOne = ['Lorem ipsum dolor sit amet, consectetur adipiscing elit. ',
-      'Maecenas molestie in lorem vel facilisis. Quisque ac enim nec lectus malesuada faucibus.',
-      'Integer congue feugiat ultricies.',
-      ' Nunc non mauris sed tellus cursus vestibulum nec quis ipsum.',
-      'Vivamus ornare magna justo, et volutpat tortor congue ut. Nulla facilisi.',
-      ' Cras in venenatis turpis. Nullam id odio justo. Etiam vehicula lectus vel purus consectetur cursus id sit amet diam.',
-      'Donec facilisis dui non orci hendrerit pharetra. Suspendisse blandit dictum turpis, in consectetur ipsum hendrerit eget.',
-      'Nam vehicula, arcu vitae egestas porttitor,',
-      'turpis nisi pulvinar neque, ut lacinia urna purus sit amet elit.'];
-    return (
-      <div>
-    <ModalManager>
-      <ContentComponent disclosureType="modal" />
-    </ModalManager>
-  </div>
-    );
-  }
+render(){
+  return(
+    <DynamicGrid defaultTemplate={template}>
+      <DynamicGrid.Region defaultPosition={region3}>
+      <Card>Region 3</Card>
+    </DynamicGrid.Region>
+    <DynamicGrid.Region defaultPosition={region1}>
+      <Card>Region 1</Card>
+    </DynamicGrid.Region>
+    <DynamicGrid.Region defaultPosition={region2}>
+      <Card>Region 2</Card>
+    </DynamicGrid.Region>
+  </DynamicGrid>
+  );
+}
+  
 }
 
+const MyModalComponent = ({ app }) => (
+  <div>
+    <p>I am in the modal!</p>
+    <Button
+      text="Dismiss"
+      onClick={() => {
+        app.dismiss();
+      }}
+    />
+  </div>
+);
 
+const MyContentComponent = ({ app }) => (
+  <div>
+    <p>I am in the body!</p>
+    <Button
+      text="Open Modal"
+      onClick={() => {
+        app.disclose({
+          preferredType: disclosureType,
+          size: 'small',
+          content: {
+            key: 'my-modal-component-instance',
+            component: <MyModalComponent />
+          }
+        });
+      }}
+    />
+  </div>
+);
+
+let Invoke = () => (
+  <ModalManager>
+    <MyContentComponent />
+  </ModalManager>
+);
 
 export default Invoke;
 //<Button color="primary" size ="lg" value = {j} onClick={this.random} text="Generate" variant="emphasis"  style={buttonStyle} />

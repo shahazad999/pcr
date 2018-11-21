@@ -1,52 +1,54 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Button from 'terra-button/lib/Button';
 import Card from 'terra-card/lib/Card';
-import Fieldset from 'terra-form-fieldset/lib/Fieldset';
 import Input from 'terra-form-input';
 import ApplicationMenuName from 'terra-application-name/lib/ApplicationMenuName';
 import Image from 'terra-image';
 import Layout from 'terra-layout/lib/Layout';
-import App from './App';
 import img from './cerner.png';
-import Index from './index';
-import Query from './query';
-import { ApplicationMenuUtility, UtilityUtils } from 'terra-application-utility/lib/ApplicationUtility';
-//import Alert from 'terra-alert';
 
-import ItemView from 'terra-clinical-item-view/lib/ItemView';
-import IconPerson from 'terra-icon/lib/icon/IconPerson';
-import IconProvider from 'terra-icon/lib/icon/IconProvider';
-import IconHospital from 'terra-icon/lib/icon/IconHospital';
-import IconBriefcase from 'terra-icon/lib/icon/IconBriefcase';
-import IconBedRequested from 'terra-icon/lib/icon/IconBedRequested';
+
+
 import IconAlert from 'terra-icon/lib/icon/IconAlert'
-import IconSuccess from 'terra-icon/lib/icon/IconSuccess'
-import IconPersonHospital from 'terra-icon/lib/icon/IconPersonHospital';
 import LabelValueView from 'terra-clinical-label-value-view/lib/LabelValueView';
 import ItemDisplay from 'terra-clinical-item-display';
-import Alert from 'terra-alert';
-import Badge from 'terra-badge';
-import Select from 'terra-form-select/lib/Select';
 import Checkbox from 'terra-form-checkbox';
-import Hyperlink from 'terra-hyperlink/lib/Hyperlink';
-
-import ActionHeader from 'terra-action-header';
-import Dialog from 'terra-dialog/lib/Dialog';
 import Divider from 'terra-divider';
-import InputField from 'terra-form-input/lib/InputField';
-import DialogModal from 'terra-dialog-modal';
+import DynamicGrid from 'terra-dynamic-grid/lib/DynamicGrid';
+import ModalManager, { disclosureType, withModalManager } from 'terra-modal-manager';
 
-import ActionFooter from 'terra-action-footer';
+
+
+// dividng the regions in the webpage
+const template = {
+    'grid-template-columns': '1fr 1fr',
+    'grid-template-rows': 'auto',
+    'grid-gap': '1px',
+  };
+  
+  const region1 = {
+    'grid-column-start': 1,
+    'grid-row-start': 2,
+  };
+  
+  const region2 = {
+    'grid-column-start': 2,
+    'grid-row-start': 2,
+  };
+  const region3 = {
+    'grid-column-start': 1,
+    'grid-column-end': 3,
+    'grid-row-start': 1,
+  };
 class Login extends Component {
     constructor(props){
         super(props);
         this.state = {
-            'username': 'PAYER999ID', 'password':'' , isLoggedIn : false, isUserValid: true,
-            'items': [], 'hash' : '',  'id': '', Holder: 'Hash',
+            'username': '', 'password':'' , isLoggedIn : false, isUserValid: false,
+            'items': [], 'hash' : '',  'id': '', 
             'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM2MDE1NDIzNjAxNjksInVzZXJuYW1lIjoiUGF5ZXIiLCJvcmdOYW1lIjoiT3JnMiIsImlhdCI6MTU0MjM2MDE2OX0.FzaNkJWmY1LsXpoMZqCOdE4nS8Vybz8YO1gcXJ7M-fc', 
-            fetchError: 0, 'toutput': [] ,'foutput' : [], view: false,
-            fhirUrl: 'http://', Holder: 'Enter a valid Hash provided in the claim', 
+            fetchError: 0, 'toutput': [] ,'foutput' : [], view: false, disableHashInput: false,
+            fhirUrl: '', Holder: 'Enter a valid Hash provided in the claim', 
             //fhirResponse: {"resourceType":"Bundle","id":"7429ac77-d3ab-481c-ba57-e0440e58c567","type":"searchset","total":4,"link":[{"relation":"self","url":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure?patient=1316020"}],"entry":[{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394555","resource":{"resourceType":"Procedure","id":"26394555","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:12:29.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe"},"performedDateTime":"2015","encounter":{"reference":"Encounter/2457909"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394551","resource":{"resourceType":"Procedure","id":"26394551","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:11:37.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza A (H1N1) virus\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ELocation\u003C/b\u003E: BU-BC\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"442352004","display":"Influenza A virus subtype H1N1 (organism)"}],"text":"Influenza A (H1N1) virus"},"performedDateTime":"2007","encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4059955","display":"BU-BC"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/34722551","resource":{"resourceType":"Procedure","id":"34722551","meta":{"versionId":"0","lastUpdated":"2015-10-27T15:36:56.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Knee abrasion\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ELocation\u003C/b\u003E: Baseline East\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ENotes\u003C/b\u003E: \u003Cul\u003E\u003Cli\u003ERecreate Test.\u003C/li\u003E\u003C/ul\u003E\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"211332006","display":"Abrasion, knee (disorder)"}],"text":"Knee abrasion"},"performer":[{"actor":{"reference":"Practitioner/1686008","display":"Morthala, Uday"}}],"_performedDateTime":{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"unknown"}]},"encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4048128","display":"Baseline East"},"notes":[{"authorReference":{"reference":"Practitioner/1686008","display":"Morthala, Uday"},"time":"2015-10-27T15:36:57.000Z","text":"Recreate Test."}]}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/24110557","resource":{"resourceType":"Procedure","id":"24110557","meta":{"versionId":"1","lastUpdated":"2014-09-16T22:49:27.000Z"},"text":{"status":"generated","div":"\u003Cdiv\u003E\u003Cp\u003E\u003Cb\u003EProcedure\u003C/b\u003E\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ESubject\u003C/b\u003E: Houde, Test 1\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ECode\u003C/b\u003E: Influenza\u003C/p\u003E\u003Cp\u003E\u003Cb\u003EStatus\u003C/b\u003E: Completed\u003C/p\u003E\u003Cp\u003E\u003Cb\u003ENotes\u003C/b\u003E: \u003Cul\u003E\u003Cli\u003ETesting this influenza\u003C/li\u003E\u003C/ul\u003E\u003C/p\u003E\u003C/div\u003E"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza"},"performedDateTime":"2014-09-16T00:00:00.000-05:00","encounter":{"reference":"Encounter/2457909"},"notes":[{"authorReference":{"reference":"Practitioner/1590015","display":"Herrman, Greg"},"time":"2014-09-16T21:35:32.000Z","text":"Testing this influenza"}]}}]}, 
             //fhirResponse: [{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394555","resource":{"resourceType":"Procedure","id":"26394555","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:12:29.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe</p><p><b>Status</b>: Completed</p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe"},"performedDateTime":"2015","encounter":{"reference":"Encounter/2457909"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/26394551","resource":{"resourceType":"Procedure","id":"26394551","meta":{"versionId":"0","lastUpdated":"2015-05-14T18:11:37.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza A (H1N1) virus</p><p><b>Status</b>: Completed</p><p><b>Location</b>: BU-BC</p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"442352004","display":"Influenza A virus subtype H1N1 (organism)"}],"text":"Influenza A (H1N1) virus"},"performedDateTime":"2007","encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4059955","display":"BU-BC"}}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/34722551","resource":{"resourceType":"Procedure","id":"34722551","meta":{"versionId":"0","lastUpdated":"2015-10-27T15:36:56.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Knee abrasion</p><p><b>Status</b>: Completed</p><p><b>Location</b>: Baseline East</p><p><b>Notes</b>: <ul><li>Recreate Test.</li></ul></p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"211332006","display":"Abrasion, knee (disorder)"}],"text":"Knee abrasion"},"performer":[{"actor":{"reference":"Practitioner/1686008","display":"Morthala, Uday"}}],"_performedDateTime":{"extension":[{"url":"http://hl7.org/fhir/StructureDefinition/data-absent-reason","valueCode":"unknown"}]},"encounter":{"reference":"Encounter/2457909"},"location":{"reference":"Location/4048128","display":"Baseline East"},"notes":[{"authorReference":{"reference":"Practitioner/1686008","display":"Morthala, Uday"},"time":"2015-10-27T15:36:57.000Z","text":"Recreate Test."}]}},{"fullUrl":"https://fhir-open.sandboxcerner.com/dstu2/0b8a0111-e8e6-4c26-a91c-5069cbc6b1ca/Procedure/24110557","resource":{"resourceType":"Procedure","id":"24110557","meta":{"versionId":"1","lastUpdated":"2014-09-16T22:49:27.000Z"},"text":{"status":"generated","div":"<div><p><b>Procedure</b></p><p><b>Subject</b>: Houde, Test 1</p><p><b>Code</b>: Influenza</p><p><b>Status</b>: Completed</p><p><b>Notes</b>: <ul><li>Testing this influenza</li></ul></p></div>"},"subject":{"reference":"Patient/1316020","display":"Houde, Test 1"},"status":"completed","code":{"coding":[{"system":"http://snomed.info/sct","code":"348046004","display":"Influenza (split virion) vaccine injection suspension 0.5mL prefilled syringe (product)"}],"text":"Influenza"},"performedDateTime":"2014-09-16T00:00:00.000-05:00","encounter":{"reference":"Encounter/2457909"},"notes":[{"authorReference":{"reference":"Practitioner/1590015","display":"Herrman, Greg"},"time":"2014-09-16T21:35:32.000Z","text":"Testing this influenza"}]}}],
             fhirResponse: '',
@@ -60,24 +62,25 @@ class Login extends Component {
         this.handleChange= this.handleChange.bind(this) 
         this.handleSubmitQuery = this.handleSubmitQuery.bind(this)
         this.handleOnSelect= this.handleOnSelect.bind(this)
+        this.reset= this.reset.bind(this)
     }
-    componentDidCatch() {
-        if(this.state.results == false){
-            alert("Invalid or Bad Request")
-        }
-    }
+
     componentDidUpdate() {
-        var hash = this.state.hash;
+        var {hash, fhirResponse,Holder} = this.state;
         var len = hash.length;
         
         if (len > 33) {
           this.fetchData()
+
         } 
         const {selectedAnswers, view} = this.state;
         if (selectedAnswers.length == 0 && view){
             this.setState({ view: false})
         }
-      
+        if (Holder.length === 34 && hash.length !=0){
+            this.setState({hash: ''})
+        }
+        
     } 
     /*
     componentDidUpdate() {
@@ -97,7 +100,7 @@ class Login extends Component {
         const { username, password } = this.state;     
         if (!(password === 'blockchain')) {
             this.setState({ isLoggedIn: false }) 
-          
+            
         }
         //Check the USER in blockchain 
         if ((password === 'blockchain')) {
@@ -105,7 +108,7 @@ class Login extends Component {
         }  
     }
     handleLogout() {
-        this.setState({isLoggedIn : false, isUserValid: false, fhirUrl: '', username: '', password: '', 'items': [], 'hash': '', fetchURL: '', fhirResponse: '', selectedAnswers: [], Holder: 'Hash', view:  false})
+        this.setState({isLoggedIn : false, isUserValid: false, fhirUrl: '', username: '', password: '', 'items': [], 'hash': '', fetchURL: '', fhirResponse: '', selectedAnswers: [], Holder: 'Enter a valid Hash provided in the claim', view:  false})
     }
 /**********************************
  * Fetch the data from blockchain
@@ -129,7 +132,7 @@ class Login extends Component {
             } else {
                 //this.setState({ fetchError : 2})
                 
-                this.setState({ fetchError : 2 ,'items' : response, fhirUrl: response.Record.fhirUrl , hash: '', Holder: this.state.hash})
+                this.setState({ fetchError : 2 ,'items' : response, fhirUrl: response.Record.fhirUrl , hash: '', Holder: this.state.hash ,disableHashInput: true })
             }
     } )
  
@@ -146,11 +149,13 @@ class Login extends Component {
           },
         }
        fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
+       //fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=CheckPayerId&args=%5B%22'+this.state.username+'%22%5D', config)
             .then(response =>  response.text() )
             .then(response => {
                 if (response.length > 20 ){
                     this.setState({ isUserValid : true , isLoggedIn: true})
                 } else {
+                    
                     this.setState({ isUserValid : false })  //This will be changed when decided user can see main page even if he doesn't have ant data in the blockchain.
                 }
             } )
@@ -182,6 +187,11 @@ class Login extends Component {
     handleSubmitQuery() {
         this.fetchURL();
     }
+    reset(){
+        this.setState({ fhirUrl: '', disableHashInput: false, 'items': [], 'hash': '', fhirResponse: '', selectedAnswers: [], Holder: 'Enter a valid Hash provided in the claim', view:  false})
+    }
+
+    
     
 /**********************************************************
  * Create an array of selected values on Checkbox selection 
@@ -215,19 +225,61 @@ class Login extends Component {
         let result;
         const fhirResponse = this.state.fhirResponse
         const {view  , selectedAnswers} = this.state;
+
+        const MyModalComponent = ({ app }) => (
+            <div>
+                 <div style={{margin: '5px'}}>
+            
+            
+            <Card >
+            <Card.Body >
+            <p><b>Additional Clinical Info:</b> </p>
+            {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /><p><b>Last Updated:</b> {item.info}</p><Divider/></ul></React.Fragment>))}
+            
+            </Card.Body>
+            </Card>
+
+            </div>
+              <Button
+                text="Dismiss"
+                onClick={() => {
+                  app.dismiss();
+                }}
+              />
+            </div>
+          );
+          const MyContentComponent = ({ app }) => (
+            <div>
+              
+              <Button
+                text="View"
+                onClick={() => {
+                  app.disclose({
+                    preferredType: disclosureType,
+                    size: 'large',
+                    content: {
+                      key: 'my-modal-component-instance',
+                      component: <MyModalComponent />
+                    }
+                  });
+                }}
+              />
+            </div>
+          );
 /********************************************************************************
  * Checkbox UI to select the key vlaues to be displayed and push selected elemets 
- ********************************************************************************/      
+ *********************************************************************************/      
         const checkBoxSelection = Object.entries(fhirResponse).map(key => 
 
             <div style={{margin: 'auto', position: 'relative',paddingLeft: '20px'}}>  
             <React.Fragment key={key}>
                 <div style={{ width:'500px', margin:'auto', fontSize: '20px',  float: "right"}}>
-                    <Checkbox id="Data" name="filter" labelText={key[1].resource.resourceType + key[1].resource.id} onChange={(e) => {
+                    <Checkbox id="Data" name="filter" disabled={this.state.view} labelText={key[1].resource.code.text} onChange={(e) => {
                         var jsonArg1 = new Object(); 
                         jsonArg1.name = key[1].resource.resourceType + key[1].resource.id; 
                         jsonArg1.value = key[1].resource.text.div;
                         jsonArg1.info = key[1].resource.meta.lastUpdated;
+                        jsonArg1.patientInfo = key[1].resource.subject;
                         const { selectedAnswers } = this.state;
     
                         if (e.currentTarget.checked) {
@@ -279,17 +331,17 @@ class Login extends Component {
         let finalOutput;
         if (view &&  selectedAnswers.length>0){
             finalOutput = 
-            <div style={{ float:"right" ,position : "relative", margin: '50px'}}>
+            <div style={{margin: '5px'}}>
             
-            <div style={{margin: '30px', position: 'relative'}}>
+            
                             <Card >
                             <Card.Body >
-                            
+                            <p><b>Additional Clinical Info:</b> </p>
                             {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /><p><b>Last Updated:</b> {item.info}</p><Divider/></ul></React.Fragment>))}
                             
                             </Card.Body>
                         </Card>
-        </div>
+        
         </div>
         } else {
             finalOutput = <div>
@@ -297,37 +349,63 @@ class Login extends Component {
             </div>
         }
 
+
 /*********************************
- * Dispaly the URL and get Button
+ * Dispaly the Button that fetches the fhirURL
  ********************************/
         let url;
-        const {fhirUrl} = this.state;
+        const {fhirUrl, hash,Holder} = this.state;
         if (fhirUrl.length > 10) {
+            url = 
+                <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Search" variant="action" style={{ margin: '5px'}} />    
+            
+        } else if  (fhirUrl.length <10 && hash.length> 33) {
+            
             url = <div>
-                <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Search" variant="action" style={buttonStyle} />    
-                </div>
+                <LabelValueView >
+                    <ItemDisplay text="Invalid or UnAuthorised Hash" textStyle="attention" icon={<IconAlert />} />
+                </LabelValueView>
+            </div>
         } 
+        if (  fhirResponse.length >2) {
+            url =   <Button color="success" size="lg" onClick={this.reset} text="Reset" variant="action" style={{ margin: '5px'}} />    
+            
+        }
+/**
+ * Error handling
+ */
+        let errors;
+        if (fhirUrl.length <10 && hash.length> 33) {
+            
+        }
 /****************
  * View Button
  ****************/
         let  viewButton;
         if (selectedAnswers.length > 0) {
-            viewButton = <div style={{margin: 'auto', position : 'relative'}}>
-                    <Button color="success" size="lg" onClick={() => {const x = this.state.view; this.setState( { view : !x})}} text="View" variant="action" style={buttonStyle} />
+            viewButton =
+            <div style= {{ position: 'relative'}}>
+            <ModalManager>
+     <MyContentComponent />
+   </ModalManager>
             
-            </div>
+                   <Button color="success" size="lg" onClick={() => {const x = this.state.view; this.setState( { view : !x})}} text="View" variant="action" style={buttonStyle} />
+                   </div>
+            
         } else {
             viewButton = <div>
              
             </div>
         }
+
+
 /****************
  * Login Page UI
  ****************/
         const logInPage =  <div  style={{ margin: 'auto', height: '500px', width: '400px', textAlign:'left', position:'relative'}}> 
             <ul>  </ul>
             <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >
-                <ApplicationMenuName title="Cernchain Login" accessory={<Image src={img} height="80px" width="80px" isFluid />} />
+                <ApplicationMenuName title="Login" accessory={<Image src={img} height="50px" width="80px" isFluid />} />
             </div>
             <Card>
                 <Card.Body>
@@ -355,22 +433,27 @@ class Login extends Component {
  * Main Page UI 
  ***************/
        
-        const mainPage  = <div>  
+        const mainPage  = <div>  <DynamicGrid defaultTemplate={template}>
+        <DynamicGrid.Region defaultPosition={region3}>
             <div style = {feildStyle}> 
                 <h3 >Welcome {this.state.username}</h3>
             </div>
             <div style = {buttonStyle2}> 
                 <Button  onClick={this.handleLogout} text="Log Out" variant="action" style={buttonStyle2} />
             </div>
-            <div  style={{  height: '200px',margin: '50px',  position:'absolute'}}> 
+            </DynamicGrid.Region>
+            <DynamicGrid.Region defaultPosition={region1}>
+            
+            <div  style={{  height: '200px',  position:'absolute', paddingInlineStart: '50px'}}> 
                 <div  style={{ margin: 'auto', height: '200px', width:'500px'}}> 
-                    <Fieldset legend="Query the Additional Clinical Information" legendAttrs={{ className: 'healtheintent-application' }}  isInline style={feildStyle} >               
-                        <ul>
-  
-                            Hash : <Input required type="text" placeholder ={this.state.Holder} value={this.state.hash} onChange={this.handleChange}  style={{ margin: 'auto', width: '400px', height: '35px'}}/>                      
-                        </ul>
+                     
+                            <p><b>Query the Additional Clinical Information</b></p>
+                            Hash : <Input required type="text" placeholder ={this.state.Holder} value={this.state.hash}  onChange={this.handleChange}  style={{ margin: 'auto', width: '320px', height: '35px'}}/>                      
+                        
                         {url}
-                    </Fieldset> 
+                        
+                       
+                    
                     </div>
                     
                    
@@ -384,9 +467,15 @@ class Login extends Component {
                 
             </div>
             
+            </DynamicGrid.Region>
+            <DynamicGrid.Region defaultPosition={region2}>
+          
             {finalOutput}
+         
+       
+    </DynamicGrid.Region>
             
-                   
+            </DynamicGrid>    
             
         </div>
 /**
@@ -427,26 +516,15 @@ class Login extends Component {
             alert = <div></div>
         }
 
-   
 /*
  * Returning the rendered Elements 
  */    
       return (
          <div>
 
-             {result}
-                <div>
-             <DialogModal
-          isOpen={this.state.isOpen}
-          onRequestClose={() => { this.setState({ isOpen: false })}}
-          header={<ActionHeader title="Action Header used here" onClose={() => { this.setState({ isOpen: false })}} />}
-          footer={<ActionFooter start="Footer Goes here" />}
-        >
-          <p>SOme thing funny</p>
-        </DialogModal>
-        <Button id="trigger-dialog-modal" text="Trigger Dialog Modal" onClick={() => { this.setState({ isOpen: true })}} />
-      </div>
-        
+           {result}
+          
+          
              
          </div>
 
