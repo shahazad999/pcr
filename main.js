@@ -153,7 +153,6 @@ class Main extends Component {
                 if (response.length > 20 ){
                     this.setState({ isUserValid : true , isLoggedIn: true})
                 } else {
-                    
                     this.setState({ isUserValid : false })
                     alert("User did not registerd for Blockchain Service")  
                 }
@@ -222,8 +221,14 @@ class Main extends Component {
                 <Card >
                     <Card.Body >
                         <p><b>Additional Clinical Info:</b> </p>
-                        {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /><p><b>Last Updated:</b> {item.info}</p><Divider/></ul></React.Fragment>))}
-                            
+                        {this.state.selectedAnswers.map(item => (
+                        <React.Fragment key={item.name}>
+                            <ul>
+                                <div dangerouslySetInnerHTML={ {__html: item.value} } />
+                                <p><b>Last Updated:</b> {item.info}</p>
+                                <Divider/>
+                            </ul>
+                        </React.Fragment>))} 
                     </Card.Body>
                 </Card>
             </div>
@@ -336,7 +341,7 @@ class Main extends Component {
             result = logInPage
            
         }
-        
+
 /***********************************
  * Returning the Rendered Elements
  *************************************/  
