@@ -7,6 +7,7 @@ import ApplicationMenuName from 'terra-application-name/lib/ApplicationMenuName'
 import Layout from 'terra-layout/lib/Layout';
 import img from './cerner.png';
 
+import Image from 'terra-image';
 
 
 
@@ -93,7 +94,7 @@ class Main extends Component {
         const { password } = this.state;     
         if (!(password === 'blockchain')) {
             this.setState({ isLoggedIn: false }) 
-            
+            alert("Invalid Pasword")
         }
         //Check the USER in blockchain 
         if ((password === 'blockchain')) {
@@ -149,7 +150,8 @@ class Main extends Component {
                     this.setState({ isUserValid : true , isLoggedIn: true})
                 } else {
                     
-                    this.setState({ isUserValid : false })  //This will be changed when decided user can see main page even if he doesn't have ant data in the blockchain.
+                    this.setState({ isUserValid : false })
+                    alert("User did not registerd for Blockchain Service")  
                 }
             } )
     }
@@ -408,11 +410,11 @@ class Main extends Component {
  *************************************/  
       return (
          <div>
-
+                   <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >
+                  
+        <ApplicationMenuName title="Payer Chart Review" accessory={<Image src={img} height="80px" width="80px" isFluid />} />
+        </div>
            {result}
-          
-          
-             
          </div>
 
       );
