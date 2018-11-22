@@ -5,11 +5,11 @@ import { BrowserRouter, Switch, Route, Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import Login from './login';
+import Main from './main';
 import Query from './query';
 import Invoke from './invoke';
 
-//ReactDOM.render(<App />, document.getElementById('root'));
+//ReactDOM.render(<Main />, document.getElementById('root'));
 
 class Index extends Component{
 
@@ -17,17 +17,18 @@ class Index extends Component{
         var Child;
 
         switch(this.props.route) {
-            case 'login': Child = Login; break;
+            case 'main': Child = Main; break;
             case 'query': 
                 Child = Query; break;
             case 'invoke' :Child = Invoke; break;
             
-            default: Child = Login;
+            default: Child = Main;
         }
 
         return (
             <div>
                 <App/>
+
                 <Child/>
             </div>
         );

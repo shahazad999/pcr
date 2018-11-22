@@ -9,7 +9,7 @@ import img from './cerner.png';
 import Input from 'terra-form-input';
 
 
-import Login from './login';
+import Main from './main';
 
 import ApplicationHeaderLayout from 'terra-application-header-layout';
 import ApplicationHeaderName from 'terra-application-name/lib/ApplicationHeaderName';

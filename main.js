@@ -3,9 +3,10 @@ import Button from 'terra-button/lib/Button';
 import Card from 'terra-card/lib/Card';
 import Input from 'terra-form-input';
 import ApplicationMenuName from 'terra-application-name/lib/ApplicationMenuName';
-import Image from 'terra-image';
+
 import Layout from 'terra-layout/lib/Layout';
 import img from './cerner.png';
+
 
 
 
@@ -15,7 +16,6 @@ import ItemDisplay from 'terra-clinical-item-display';
 import Checkbox from 'terra-form-checkbox';
 import Divider from 'terra-divider';
 import DynamicGrid from 'terra-dynamic-grid/lib/DynamicGrid';
-import ModalManager, { disclosureType, withModalManager } from 'terra-modal-manager';
 
 
 
@@ -40,12 +40,12 @@ const template = {
     'grid-column-end': 3,
     'grid-row-start': 1,
   };
-class Login extends Component {
+class Main extends Component {
     constructor(props){
         super(props);
         this.state = {
             'username': '', 'password':'' , isLoggedIn : false, isUserValid: false,
-            'items': [], 'hash' : '',  'id': '', 
+            'items': [], 'hash' : '',  'id': '', hostIP: '10.182.71.25',
             'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM2MDE1NDIzNjAxNjksInVzZXJuYW1lIjoiUGF5ZXIiLCJvcmdOYW1lIjoiT3JnMiIsImlhdCI6MTU0MjM2MDE2OX0.FzaNkJWmY1LsXpoMZqCOdE4nS8Vybz8YO1gcXJ7M-fc', 
             fetchError: 0, 'toutput': [] ,'foutput' : [], view: false, disableHashInput: false,
             fhirUrl: '', Holder: 'Enter a valid Hash provided in the claim', 
@@ -59,14 +59,13 @@ class Login extends Component {
         this.handleChangePassword= this.handleChangePassword.bind(this)
         this.handleSubmit=this.handleSubmit.bind(this)
         this.handleLogout= this.handleLogout.bind(this)
-        this.handleChange= this.handleChange.bind(this) 
+        this.handleChangeHash= this.handleChangeHash.bind(this) 
         this.handleSubmitQuery = this.handleSubmitQuery.bind(this)
-        this.handleOnSelect= this.handleOnSelect.bind(this)
         this.reset= this.reset.bind(this)
     }
 
     componentDidUpdate() {
-        var {hash, fhirResponse,Holder} = this.state;
+        var {hash, Holder} = this.state;
         var len = hash.length;
         
         if (len > 33) {
@@ -74,21 +73,15 @@ class Login extends Component {
 
         } 
         const {selectedAnswers, view} = this.state;
-        if (selectedAnswers.length == 0 && view){
+        if (selectedAnswers.length === 0 && view){
             this.setState({ view: false})
         }
-        if (Holder.length === 34 && hash.length !=0){
+        if (Holder.length === 34 && hash.length !==0){
             this.setState({hash: ''})
         }
         
     } 
-    /*
-    componentDidUpdate() {
-        const {selectedAnswers, view} = this.state;
-        if (selectedAnswers.length == 0 && view){
-            this.setState({ view: false})
-        }
-    }*/
+    
     handleChangeUsername(e) {
         this.setState({username: e.target.value});
     }
@@ -97,7 +90,7 @@ class Login extends Component {
     }
     handleSubmit(){
         //Check the password
-        const { username, password } = this.state;     
+        const { password } = this.state;     
         if (!(password === 'blockchain')) {
             this.setState({ isLoggedIn: false }) 
             
@@ -121,10 +114,10 @@ class Login extends Component {
           'content-Type': 'application/json'
         },
       }
-      fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22_rev%5C%22:%5C%22'+this.state.hash+'%5C%22,%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
+      fetch('http://'+this.state.hostIP+':4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22_rev%5C%22:%5C%22'+this.state.hash+'%5C%22,%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
         .then(response =>  response.json() )
         .then(response => {
-            if (JSON.stringify(response) == '[]'){
+            if (JSON.stringify(response) === '[]'){
                this.setState({ fetchError : 1})
                this.setState({ 'foutput' : 'failed'})
                this.setState({ 'items' : [] })
@@ -148,7 +141,7 @@ class Login extends Component {
             'content-Type': 'application/json'
           },
         }
-       fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
+       fetch('http://'+this.state.hostIP+':4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
        //fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=CheckPayerId&args=%5B%22'+this.state.username+'%22%5D', config)
             .then(response =>  response.text() )
             .then(response => {
@@ -176,14 +169,9 @@ class Login extends Component {
             .then((response) => this.setState({ fhirResponse : response.entry , totalFhirResponse: response}));
         
     }  
-    handleChange(e) {
+    handleChangeHash(e) {
         this.setState({hash: e.target.value});
     }
-
-    handleChangeFilter(e) {
-        this.setState({filter: e.target.value});
-    }
-  
     handleSubmitQuery() {
         this.fetchURL();
     }
@@ -193,79 +181,19 @@ class Login extends Component {
 
     
     
-/**********************************************************
- * Create an array of selected values on Checkbox selection 
- **********************************************************/
-    handleOnSelect(e) {
-        const { selectedAnswers } = this.state;
-    
-        if (e.currentTarget.checked) {
-          selectedAnswers.push(e.currentTarget.value);
-        } else {
-          selectedAnswers.splice(selectedAnswers.indexOf(e.currentTarget.value), 1);
-        }
-
-        this.setState({ selectedAnswers });
-    }
-    
+  
 
 
     render() {   
 
         const inputStyle ={ height: '35px', margin: 'auto', width: '100%'};
-
-        
-        
         const buttonStyle = { margin: 'auto' };
         const buttonStyle2 = { float : 'right'  };
         const feildStyle = { width: '100%', textAlign: 'right'  };
-        const isLoggedIn = this.state.isLoggedIn;
-        const fetchError = this.state.fetchError
-        const logoutStyle = { textAlign: 'left', paddingLeft: '1100px', float: 'right'}
-        let result;
+        const {isLoggedIn , fetchError}= this.state;
         const fhirResponse = this.state.fhirResponse
         const {view  , selectedAnswers} = this.state;
 
-        const MyModalComponent = ({ app }) => (
-            <div>
-                 <div style={{margin: '5px'}}>
-            
-            
-            <Card >
-            <Card.Body >
-            <p><b>Additional Clinical Info:</b> </p>
-            {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /><p><b>Last Updated:</b> {item.info}</p><Divider/></ul></React.Fragment>))}
-            
-            </Card.Body>
-            </Card>
-
-            </div>
-              <Button
-                text="Dismiss"
-                onClick={() => {
-                  app.dismiss();
-                }}
-              />
-            </div>
-          );
-          const MyContentComponent = ({ app }) => (
-            <div>
-              
-              <Button
-                text="View"
-                onClick={() => {
-                  app.disclose({
-                    preferredType: disclosureType,
-                    size: 'large',
-                    content: {
-                      key: 'my-modal-component-instance',
-                      component: <MyModalComponent />
-                    }
-                  });
-                }}
-              />
-            </div>
-          );
 /********************************************************************************
  * Checkbox UI to select the key vlaues to be displayed and push selected elemets 
  *********************************************************************************/      
@@ -281,7 +209,9 @@ class Login extends Component {
                         jsonArg1.info = key[1].resource.meta.lastUpdated;
                         jsonArg1.patientInfo = key[1].resource.subject;
                         const { selectedAnswers } = this.state;
-    
+/**********************************************************
+ * Create an array of selected values on Checkbox selection 
+ **********************************************************/
                         if (e.currentTarget.checked) {
                           selectedAnswers.push(jsonArg1);
                         } else if (!e.currentTarget.checked) {
@@ -302,29 +232,7 @@ class Login extends Component {
         )
  
 
-/**
- * Display the final output retrived from FHIR after checkbox filtering
- */
-/*
-        const res = JSON.stringify(selectedAnswers)
-        let finalOutput;
-        if (view){
-            finalOutput = <div style={{margin: 'auto', position: 'relative'}}>
-                            <Card>
-                            <Card.Body isContentCentered>
-                            
-                            {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul>{item.name} : {JSON.stringify(item.value)}</ul></React.Fragment>))}
-                            
-                            </Card.Body>
-                        </Card>
-        </div>
 
-        } else {
-            finalOutput = <div>
-
-            </div>
-        }
-*/
 /*******************************************************************************
  * Display the final output retrived from FHIR after checkbox filtering only Entry
  ********************************************************************************/ 
@@ -350,11 +258,11 @@ class Login extends Component {
         }
 
 
-/*********************************
- * Dispaly the Button that fetches the fhirURL
- ********************************/
+/**************************************************************************************************
+ * Dispaly the Button that fetches the fhirURL on Succsessfull retrivel of Fhir Url from blockchain
+ **************************************************************************************************/
         let url;
-        const {fhirUrl, hash,Holder} = this.state;
+        const {fhirUrl, hash} = this.state;
         if (fhirUrl.length > 10) {
             url = 
                 <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Search" variant="action" style={{ margin: '5px'}} />    
@@ -371,23 +279,15 @@ class Login extends Component {
             url =   <Button color="success" size="lg" onClick={this.reset} text="Reset" variant="action" style={{ margin: '5px'}} />    
             
         }
-/**
- * Error handling
- */
-        let errors;
-        if (fhirUrl.length <10 && hash.length> 33) {
-            
-        }
-/****************
- * View Button
- ****************/
+
+/********************************************************************
+ * View Button displayed only after a minimum of one filter selected
+ *******************************************************************/
         let  viewButton;
         if (selectedAnswers.length > 0) {
             viewButton =
             <div style= {{ position: 'relative'}}>
-            <ModalManager>
-     <MyContentComponent />
-   </ModalManager>
+            
             
                    <Button color="success" size="lg" onClick={() => {const x = this.state.view; this.setState( { view : !x})}} text="View" variant="action" style={buttonStyle} />
                    </div>
@@ -405,10 +305,12 @@ class Login extends Component {
         const logInPage =  <div  style={{ margin: 'auto', height: '500px', width: '400px', textAlign:'left', position:'relative'}}> 
             <ul>  </ul>
             <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >
-                <ApplicationMenuName title="Login" accessory={<Image src={img} height="50px" width="80px" isFluid />} />
-            </div>
+            
+            <ApplicationMenuName title="Login" />
+            
             <Card>
                 <Card.Body>
+                  
                     <ul>
                         <label>
                         <Input type="text" placeholder ="PayerID" value={this.state.username} onChange={this.handleChangeUsername} required  style={inputStyle}/>
@@ -425,7 +327,7 @@ class Login extends Component {
                     </div>                    
                 </Card.Body>
             </Card>
-       
+            </div>
         </div>
 
         
@@ -433,54 +335,38 @@ class Login extends Component {
  * Main Page UI 
  ***************/
        
-        const mainPage  = <div>  <DynamicGrid defaultTemplate={template}>
-        <DynamicGrid.Region defaultPosition={region3}>
-            <div style = {feildStyle}> 
-                <h3 >Welcome {this.state.username}</h3>
-            </div>
-            <div style = {buttonStyle2}> 
-                <Button  onClick={this.handleLogout} text="Log Out" variant="action" style={buttonStyle2} />
-            </div>
-            </DynamicGrid.Region>
-            <DynamicGrid.Region defaultPosition={region1}>
-            
-            <div  style={{  height: '200px',  position:'absolute', paddingInlineStart: '50px'}}> 
-                <div  style={{ margin: 'auto', height: '200px', width:'500px'}}> 
-                     
+        const mainPage  = <div>  
+            <DynamicGrid defaultTemplate={template}>
+                <DynamicGrid.Region defaultPosition={region3}>
+                    <div style = {feildStyle}> 
+                        <h3 >Welcome {this.state.username}</h3>
+                    </div>
+                    <div style = {buttonStyle2}> 
+                        <Button  onClick={this.handleLogout} text="Log Out" variant="action" style={buttonStyle2} />
+                    </div>
+                </DynamicGrid.Region>
+                <DynamicGrid.Region defaultPosition={region1}>
+                    <div  style={{  height: '200px',  position:'absolute', paddingInlineStart: '50px'}}> 
+                        <div  style={{ margin: 'auto', height: '200px', width:'500px'}}> 
                             <p><b>Query the Additional Clinical Information</b></p>
-                            Hash : <Input required type="text" placeholder ={this.state.Holder} value={this.state.hash}  onChange={this.handleChange}  style={{ margin: 'auto', width: '320px', height: '35px'}}/>                      
-                        
-                        {url}
-                        
-                       
-                    
+                            Hash : <Input required type="text" placeholder ={this.state.Holder} value={this.state.hash}  onChange={this.handleChangeHash}  style={{ margin: 'auto', width: '320px', height: '35px'}}/>                      
+                            {url}
+                        </div>
+                        {checkBoxSelection}
+                        <div style={{ float: "right"}}>
+                            {viewButton}
+                        </div>   
                     </div>
-                    
-                   
-                    {checkBoxSelection}
-                    <div style={{ float: "right" , width: '200px'}}>
-                    {viewButton}
-                    </div>
-                    
-                    
-                    
-                
-            </div>
-            
-            </DynamicGrid.Region>
-            <DynamicGrid.Region defaultPosition={region2}>
-          
-            {finalOutput}
-         
-       
-    </DynamicGrid.Region>
-            
+                </DynamicGrid.Region>
+                <DynamicGrid.Region defaultPosition={region2}>
+                    {finalOutput}
+                </DynamicGrid.Region>
             </DynamicGrid>    
-            
         </div>
-/**
+/*******************
  * Login Validation
- */
+ ********************/
+        let result;
         const {isUserValid} = this.state;
         if (isUserValid) {
             result =   mainPage 
@@ -491,9 +377,10 @@ class Login extends Component {
         }
 /**
  * Login Error alerts
- */
+ */     
+        let alerts;
         if (fetchError === 2 & isLoggedIn) {
-            alert = <div style={{ margin: 'auto', height: '500px', width: '500px', textAlign:'left', position:'relative'}}>
+            alerts = <div style={{ margin: 'auto', height: '500px', width: '500px', textAlign:'left', position:'relative'}}>
                     <Layout style={{ margin: '50px', height: '500px', width: '500px' }} >
                         
                         <Card>
@@ -507,18 +394,18 @@ class Login extends Component {
            </div>
            
         } else if (fetchError === 1 & isLoggedIn) {
-            alert = <div style={{paddingLeft: '300px'}}>
+            alerts = <div style={{paddingLeft: '300px'}}>
                 <LabelValueView >
                     <ItemDisplay text="Failed to Fetch the data due to UnAuthorised request" textStyle="attention" icon={<IconAlert />} />
                 </LabelValueView>
             </div>
         } else {
-            alert = <div></div>
+            alerts = <div></div>
         }
 
-/*
- * Returning the rendered Elements 
- */    
+/***********************************
+ * Returning the Rendered Elements
+ *************************************/  
       return (
          <div>
 
@@ -532,6 +419,6 @@ class Login extends Component {
     }
 }
 
-export default Login;
+export default Main;
 
 // <Badge  icon ={<IconAlert/>} size="large" text="Fetch failed due to unauthorized access" />
