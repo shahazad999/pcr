@@ -46,7 +46,7 @@ class Main extends Component {
         super(props);
         this.state = {
             'username': '', 'password':'' , isLoggedIn : false, isUserValid: false,
-            'items': [], 'hash' : '',  'id': '', hostIP: '10.182.71.25',
+            'items': [], 'hash' : '',  'id': '', hostIP: '10.182.71.25', port: '',
             'auth' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjM2MDE1NDIzNjAxNjksInVzZXJuYW1lIjoiUGF5ZXIiLCJvcmdOYW1lIjoiT3JnMiIsImlhdCI6MTU0MjM2MDE2OX0.FzaNkJWmY1LsXpoMZqCOdE4nS8Vybz8YO1gcXJ7M-fc', 
             fetchError: 0, 'toutput': [] ,'foutput' : [], view: false, disableHashInput: false,
             fhirUrl: '', Holder: 'Enter a valid Hash provided in the claim', 
@@ -143,7 +143,6 @@ class Main extends Component {
           },
         }
        fetch('http://'+this.state.hostIP+':4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=queryCustom&args=%5B%22%7B%5C%22selector%5C%22:%7B%5C%22payerId%5C%22:%5C%22'+this.state.username+'%5C%22%7D%7D%22%5D', config)
-       //fetch('http://localhost:4000' + '/channels/mychannel/chaincodes/pcr?peer=peer0.org1.example.com&fcn=CheckPayerId&args=%5B%22'+this.state.username+'%22%5D', config)
             .then(response =>  response.text() )
             .then(response => {
                 if (response.length > 20 ){
@@ -177,6 +176,7 @@ class Main extends Component {
     handleSubmitQuery() {
         this.fetchURL();
     }
+    //A Reset Button that that Refreshes for new Search
     reset(){
         this.setState({ fhirUrl: '', disableHashInput: false, 'items': [], 'hash': '', fhirResponse: '', selectedAnswers: [], Holder: 'Enter a valid Hash provided in the claim', view:  false})
     }
@@ -191,16 +191,14 @@ class Main extends Component {
         const inputStyle ={ height: '35px', margin: 'auto', width: '100%'};
         const buttonStyle = { margin: 'auto' };
         const buttonStyle2 = { float : 'right'  };
-        const feildStyle = { width: '100%', textAlign: 'right'  };
-        const {isLoggedIn , fetchError}= this.state;
-        const fhirResponse = this.state.fhirResponse
+        const feildStyle = { width: '100%', textAlign: 'right'};
+        const fhirResponse = this.state.fhirResponse;
         const {view  , selectedAnswers} = this.state;
 
 /********************************************************************************
- * Checkbox UI to select the key vlaues to be displayed and push selected elemets 
+ * Checkbox UI to select the key vlaues to be displayed and push selected elemets to array
  *********************************************************************************/      
         const checkBoxSelection = Object.entries(fhirResponse).map(key => 
-
             <div style={{margin: 'auto', position: 'relative',paddingLeft: '20px'}}>  
             <React.Fragment key={key}>
                 <div style={{ width:'500px', margin:'auto', fontSize: '20px',  float: "right"}}>
@@ -211,30 +209,18 @@ class Main extends Component {
                         jsonArg1.info = key[1].resource.meta.lastUpdated;
                         jsonArg1.patientInfo = key[1].resource.subject;
                         const { selectedAnswers } = this.state;
-/**********************************************************
- * Create an array of selected values on Checkbox selection 
- **********************************************************/
                         if (e.currentTarget.checked) {
                           selectedAnswers.push(jsonArg1);
                         } else if (!e.currentTarget.checked) {
-                          selectedAnswers.splice(selectedAnswers.values(jsonArg1), 1);
-                          
-                          //selectedAnswers.pop(jsonArg1)
-                         
+                          selectedAnswers.splice(selectedAnswers.values(jsonArg1), 1);                       
                         }
-                
                         this.setState({ selectedAnswers });  
                         }} />
                 </div>
-               
             </React.Fragment>
-            </div> 
-         
-                   
+            </div>           
         )
- 
-
-
+        
 /*******************************************************************************
  * Display the final output retrived from FHIR after checkbox filtering only Entry
  ********************************************************************************/ 
@@ -242,23 +228,18 @@ class Main extends Component {
         if (view &&  selectedAnswers.length>0){
             finalOutput = 
             <div style={{margin: '5px'}}>
-            
-            
-                            <Card >
-                            <Card.Body >
-                            <p><b>Additional Clinical Info:</b> </p>
-                            {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /><p><b>Last Updated:</b> {item.info}</p><Divider/></ul></React.Fragment>))}
+                <Card >
+                    <Card.Body >
+                        <p><b>Additional Clinical Info:</b> </p>
+                        {this.state.selectedAnswers.map(item => (<React.Fragment key={item.name}><ul><div dangerouslySetInnerHTML={ {__html: item.value} } /><p><b>Last Updated:</b> {item.info}</p><Divider/></ul></React.Fragment>))}
                             
-                            </Card.Body>
-                        </Card>
-        
-        </div>
+                    </Card.Body>
+                </Card>
+            </div>
         } else {
             finalOutput = <div>
-
             </div>
         }
-
 
 /**************************************************************************************************
  * Dispaly the Button that fetches the fhirURL on Succsessfull retrivel of Fhir Url from blockchain
@@ -266,18 +247,18 @@ class Main extends Component {
         let url;
         const {fhirUrl, hash} = this.state;
         if (fhirUrl.length > 10) {
-            url = 
-                <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Search" variant="action" style={{ margin: '5px'}} />    
-            
-        } else if  (fhirUrl.length <10 && hash.length> 33) {
-            
+            url = <Button color="success" size="lg" onClick={this.handleSubmitQuery} text="Search" variant="action" style={{ margin: '5px'}} /> 
+        } 
+        //If cant fetch blockchain error is displayed saying invalid hash
+        else if  (fhirUrl.length <10 && hash.length> 33) {
             url = <div>
                 <LabelValueView >
                     <ItemDisplay text="Invalid or UnAuthorised Hash" textStyle="attention" icon={<IconAlert />} />
                 </LabelValueView>
             </div>
-        } 
-        if (  fhirResponse.length >2) {
+        }
+        //After succsess full fetch  
+        if (fhirResponse.length >2) {
             url =   <Button color="success" size="lg" onClick={this.reset} text="Reset" variant="action" style={{ margin: '5px'}} />    
             
         }
@@ -289,10 +270,8 @@ class Main extends Component {
         if (selectedAnswers.length > 0) {
             viewButton =
             <div style= {{ position: 'relative'}}>
-            
-            
-                   <Button color="success" size="lg" onClick={() => {const x = this.state.view; this.setState( { view : !x})}} text="View" variant="action" style={buttonStyle} />
-                   </div>
+                <Button color="success" size="lg" onClick={() => {const x = this.state.view; this.setState( { view : !x})}} text="View" variant="action" style={buttonStyle} />
+            </div>
             
         } else {
             viewButton = <div>
@@ -300,43 +279,32 @@ class Main extends Component {
             </div>
         }
 
-
 /****************
  * Login Page UI
  ****************/
         const logInPage =  <div  style={{ margin: 'auto', height: '500px', width: '400px', textAlign:'left', position:'relative'}}> 
             <ul>  </ul>
             <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >
-            
-            <ApplicationMenuName title="Login" />
-            
+                <ApplicationMenuName title="Login" />
+            </div>
             <Card>
-                <Card.Body>
-                  
+                <Card.Body>  
                     <ul>
-                        <label>
-                        <Input type="text" placeholder ="PayerID" value={this.state.username} onChange={this.handleChangeUsername} required  style={inputStyle}/>
-                        </label>
+                        <Input type="text" placeholder ="PayerID" value={this.state.username} onChange={this.handleChangeUsername} required  style={inputStyle}/> 
                     </ul>
                     <ul>
-                        <label>
                         <Input type="password" placeholder ="Password" value={this.state.password} onChange={this.handleChangePassword} required  style={inputStyle}/>
-                        </label>
                     </ul>
-                
                     <div style={{ margin: 'auto', textAlign:'center'}}>
                         <Button  onClick={this.handleSubmit} text="Submit" variant="action" style={buttonStyle} />
                     </div>                    
                 </Card.Body>
             </Card>
-            </div>
         </div>
-
-        
+       
 /***************
  * Main Page UI 
- ***************/
-       
+ ***************/     
         const mainPage  = <div>  
             <DynamicGrid defaultTemplate={template}>
                 <DynamicGrid.Region defaultPosition={region3}>
@@ -372,55 +340,21 @@ class Main extends Component {
         const {isUserValid} = this.state;
         if (isUserValid) {
             result =   mainPage 
-
         } else {
             result = logInPage
            
         }
-/**
- * Login Error alerts
- */     
-        let alerts;
-        if (fetchError === 2 & isLoggedIn) {
-            alerts = <div style={{ margin: 'auto', height: '500px', width: '500px', textAlign:'left', position:'relative'}}>
-                    <Layout style={{ margin: '50px', height: '500px', width: '500px' }} >
-                        
-                        <Card>
-                            <Card.Body isContentCentered>
-                         
-                            </Card.Body>
-                        </Card>
-
-                    </Layout>
-               
-           </div>
-           
-        } else if (fetchError === 1 & isLoggedIn) {
-            alerts = <div style={{paddingLeft: '300px'}}>
-                <LabelValueView >
-                    <ItemDisplay text="Failed to Fetch the data due to UnAuthorised request" textStyle="attention" icon={<IconAlert />} />
-                </LabelValueView>
-            </div>
-        } else {
-            alerts = <div></div>
-        }
-
 /***********************************
  * Returning the Rendered Elements
  *************************************/  
       return (
-         <div>
-                   <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >
-                  
-        <ApplicationMenuName title="Payer Chart Review" accessory={<Image src={img} height="80px" width="80px" isFluid />} />
-        </div>
+        <div>
+            <div style={{ border: '1px solid lightGray', backgroundColor: '#2481ca', width: '100%', height: '50px', position: 'relative', }} >      
+                <ApplicationMenuName title="Payer Chart Review" accessory={<Image src={img} height="80px" width="80px" isFluid />} />
+            </div>
            {result}
          </div>
-
       );
     }
 }
-
 export default Main;
-
-// <Badge  icon ={<IconAlert/>} size="large" text="Fetch failed due to unauthorized access" />
